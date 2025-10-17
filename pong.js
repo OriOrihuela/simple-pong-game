@@ -87,8 +87,7 @@ function update() {
         ball.y < player.y + player.height
     ) {
         ball.x = player.x + player.width;
-        ball.dx *= -1.05; // slightly increase speed
-        // add effect based on where it hit the paddle
+        ball.dx *= -1.05;
         let collidePoint = ball.y + ball.size / 2 - (player.y + player.height / 2);
         ball.dy = collidePoint * 0.2;
     }
@@ -111,14 +110,15 @@ function update() {
         resetBall();
     }
 
-    // AI movement (simple follow)
+    // AI movement (much faster)
     let target = ball.y - (ai.height / 2) + (ball.size / 2);
+    // Increased max speed and multiplier for much faster movement:
     if (ai.y + ai.height / 2 < ball.y + ball.size / 2) {
-        ai.dy = Math.min(4, target - ai.y);
+        ai.dy = Math.min(16, target - ai.y);
     } else {
-        ai.dy = Math.max(-4, target - ai.y);
+        ai.dy = Math.max(-16, target - ai.y);
     }
-    ai.y += ai.dy * 0.08;
+    ai.y += ai.dy * 0.2;
 
     // Clamp AI paddle
     if (ai.y < 0) ai.y = 0;
@@ -126,17 +126,10 @@ function update() {
 }
 
 function render() {
-    // Clear
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw net
     drawNet();
-
-    // Draw paddles
     drawRect(player.x, player.y, player.width, player.height, PADDLE_COLOR);
     drawRect(ai.x, ai.y, ai.width, ai.height, PADDLE_COLOR);
-
-    // Draw ball
     drawRect(ball.x, ball.y, ball.size, ball.size, BALL_COLOR);
 }
 
@@ -146,7 +139,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-// Mouse movement for player paddle
 canvas.addEventListener('mousemove', function(evt) {
     const rect = canvas.getBoundingClientRect();
     const mouseY = evt.clientY - rect.top;
@@ -155,5 +147,4 @@ canvas.addEventListener('mousemove', function(evt) {
     if (player.y + player.height > canvas.height) player.y = canvas.height - player.height;
 });
 
-// Start the game loop
 gameLoop();
