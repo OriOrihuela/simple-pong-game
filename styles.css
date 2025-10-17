@@ -1,0 +1,15 @@
+body {
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#pong {
+    background: #111;
+    border: 2px solid #fff;
+    display: block;
+    box-shadow: 0 0 20px #fff8;
+}
